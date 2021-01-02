@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">RCar</string>
+    <string name="settings">SETTINGS</string>
+    <string name="defaultIP">192.168.0.17</string>
+    <string name="defaultPort">4210</string>
+    <string name="start">START</string>
+    <string name="IPadress">IP adress</string>
+    <string name="portNumber">PORT</string>
+    <string name="fps">DELAY BETWEEN PACKETS [ms]</string>
+</resources>
