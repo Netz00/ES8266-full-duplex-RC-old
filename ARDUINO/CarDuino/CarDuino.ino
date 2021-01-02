@@ -28,8 +28,6 @@ WiFiUDP Udp;
 
 char* incomingPacket;  // buffer for incoming packets
 
-int forward = 0, forward2 = 0, direction1 = 0, direction2 = 0;
-int *pforward, *pforward2, *pdirection, *pdirection2;
 
 int packetSize;
 int len;
