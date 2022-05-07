@@ -2,17 +2,17 @@
 #include <WiFiUdp.h>
 
 
+// Acess point credentials
 const char* ssid = "1234";
 const char* password = "qwertz1234";
 
 #define bufferSize 255
-#define new_frequency 10  //use PWM frequency optimised for your hardware
-#define PWMN 5            //forward, D2
-#define PWMR 16           //backward, D1
-#define PWML 0            //left, D3
-#define PWMD 4            //right, D4
-#define localUdpPort 4210 //right, D4
-
+#define new_frequency 50   // use PWM frequency optimised for your hardware
+#define PWM_F 5            // forward, D2
+#define PWM_B 16           // backward, D1
+#define PWM_L 0            // left, D3
+#define PWM_R 4            // right, D4
+#define localUdpPort 4210  // port ESP8266 will be listening
 
 struct _pos;
 typedef struct _pos* pos;
@@ -51,15 +51,15 @@ void setup()
     Serial.printf("Failed to allocate memory.\n");
 
   analogWriteFreq(new_frequency);
-  pinMode(PWMN, OUTPUT);
-  pinMode(PWMR, OUTPUT);
-  pinMode(PWML, OUTPUT);
-  pinMode(PWMD, OUTPUT);
+  pinMode(PWM_F, OUTPUT);
+  pinMode(PWM_B, OUTPUT);
+  pinMode(PWM_L, OUTPUT);
+  pinMode(PWM_R, OUTPUT);
 
-  analogWrite(PWMN, 0);
-  analogWrite(PWMR, 0);
-  analogWrite(PWML, 0);
-  analogWrite(PWMD, 0);
+  analogWrite(PWM_F, 0);
+  analogWrite(PWM_B, 0);
+  analogWrite(PWM_L, 0);
+  analogWrite(PWM_R, 0);
 
 
   Serial.printf("Connecting to %s ", ssid);
@@ -101,36 +101,36 @@ inline void changeOfDirection()
   if (data->forward != data->backward)
   {
     if (data->backward == 0) {
-      analogWrite(PWMR, 0);
-      analogWrite(PWMN, data->forward);
+      analogWrite(PWM_B, 0);
+      analogWrite(PWM_F, data->forward);
     }
     if (data->forward == 0) {
-      analogWrite(PWMN, 0);
-      analogWrite(PWMR, data->backward);
+      analogWrite(PWM_F, 0);
+      analogWrite(PWM_B, data->backward);
     }
   }
   else
   {
-    analogWrite(PWMN, 0);
-    analogWrite(PWMR, 0);
+    analogWrite(PWM_F, 0);
+    analogWrite(PWM_B, 0);
   }
 
   if (data->left != data->right)
   {
     if (data->right == 0) {
-      analogWrite(PWMD, 0);
-      analogWrite(PWML, data->left);
+      analogWrite(PWM_R, 0);
+      analogWrite(PWM_L, data->left);
     }
     if (data->left == 0) {
-      analogWrite(PWML, 0);
-      analogWrite(PWMD, data->right);
+      analogWrite(PWM_L, 0);
+      analogWrite(PWM_R, data->right);
     }
   }
 
   else
   {
-    analogWrite(PWML, 0);
-    analogWrite(PWMD, 0);
+    analogWrite(PWM_L, 0);
+    analogWrite(PWM_R, 0);
   }
 
 }
