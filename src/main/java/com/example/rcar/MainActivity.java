@@ -6,22 +6,18 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.media.MediaPlayer;
 
-import java.io.Console;
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
@@ -36,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     SeekBar accelerateS;
 
     private SensorManager sensorManager = null;
+    private MediaPlayer mp = MediaPlayer.create(this, R.id.ip);
 
     String msg="";
     String tmp_msg = "";
@@ -58,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             else if (acc < 1024) {
                 gas = 0;
                 rikverc = -(acc - 1024);
+                mp.start();
 
             }
             else if (acc == 1024) {
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
 
-           timerHandler.postDelayed(this, fps);//ponovo izvrši sam sebe za vrijeme fps
+            timerHandler.postDelayed(this, fps);//ponovo izvrši sam sebe za vrijeme fps
 
 
 
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         settingsB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    settings();
+                settings();
             }
         });
 
@@ -241,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         timerHandler.removeCallbacks(timerRunnable);//izbrisi sve zadatke od timerRunnable na cekanju
         startB.setText("continue");
         sensorManager.registerListener((SensorEventListener) this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-               SensorManager.SENSOR_DELAY_GAME);
+                SensorManager.SENSOR_DELAY_GAME);
         reset();
         display();
         super.onRestart();
